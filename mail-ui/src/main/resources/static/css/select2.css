@@ -1,0 +1,14 @@
+.select2-container .select2-search__field {
+    width: auto !important;
+    margin:0px !important;
+}
+
+.select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice__remove{
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    margin-left: 0px;
+    border-bottom-left-radius: 0.2rem;
+    border-top-left-radius: 0.2rem;
+}

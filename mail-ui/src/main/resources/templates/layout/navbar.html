@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+    <nav th:fragment="navbar"  class="main-header navbar navbar-expand navbar-white navbar-light">
+        <div class="container-fluid">
+
+            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a <!--th:href="${#mvc.url('change-password').build()}"--> class="dropdown-item">
+                            Change Password
+                        </a>
+                        <div class="dropdown-divider"></div>
+
+                        <div>
+                            <a href="javascript: document.logoutForm.submit()" class="dropdown-item text text-primary">Sign out</a>
+                            <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                <input hidden type="submit" value="Sign Out" />
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</body>
+</html>

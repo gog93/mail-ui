@@ -1,0 +1,4 @@
+# Project exclude paths
+/mail-ui/.gradle/
+/mail-ui/build/
+/mail-ui/build/classes/java/main/

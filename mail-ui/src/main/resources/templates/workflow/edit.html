@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Update Workflow</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1 class="m-0">Workflow</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-body">
+                        <form th:object="${workflow}"
+                              name="update-workflow"
+                              id="update-workflow"
+                              method="POST"
+                              th:action="@{/workflow/{id}(id=${id})}" >
+                            <input type="hidden" name="_method" value="put"/>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="rule-name">Name</label>
+                                        <input th:field="*{name}" type="text" id="rule-name" class="form-control" placeholder="Email Template Name" />
+                                        <p class="text text-danger"
+                                           th:if="${#fields.hasErrors('name')}"
+                                           th:errors="*{name}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="row-type">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <input id="description"  th:field="*{description}"  type="text" class="form-control" placeholder="Enter value...">
+                                            <p class="text text-danger"
+                                               th:if="${#fields.hasErrors('description')}"
+                                               th:errors="*{description}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</div>
+</body>
+</html>

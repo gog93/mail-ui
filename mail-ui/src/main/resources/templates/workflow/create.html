@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Create Email Templates</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+SELECT, INPUT[type="text"] {
+width: 160px;
+box-sizing: border-box;
+}
+SECTION {
+padding: 8px;
+background-color: #f0f0f0;
+overflow: auto;
+}
+SECTION > DIV {
+float: left;
+padding: 4px;
+}
+SECTION > DIV + DIV {
+width: 40px;
+text-align: center;
+}
+</style>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1 class="m-0">Workflow</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-body">
+                        <form th:object="${workflow}"
+                              name="create-workflow"
+                              id="create-workflow"
+                              method="POST"
+                              th:action="${#mvc.url('save-workflow').build()}">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="rule-name">Name</label>
+                                        <input th:field="*{name}" type="text" id="rule-name" class="form-control form-control-sm" placeholder="Workflow Name" />
+                                        <p class="text text-danger"
+                                           th:if="${#fields.hasErrors('name')}"
+                                           th:errors="*{name}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="row-type">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <input id="description"  th:field="*{description}"  type="text" class="form-control form-control-sm" placeholder="Enter value...">
+                                            <p class="text text-danger"
+                                               th:if="${#fields.hasErrors('description')}"
+                                               th:errors="*{description}"></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <table id="customerTable" class="table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <table id="workflowCustomers" class="table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+<script >
+   function loadCustomers() {
+
+    $.ajax({
+        url: '/customers',
+        type: 'GET',
+        success: function (data) {
+            var $customerTable = $('#customerTable tbody');
+            $customerTable.empty(); // Clear existing rows
+            $.each(data, function (index, customer) {
+                var row = '<tr>' +
+                    '<td>' + customer.id + '</td>' +
+                    '<td>' + customer.name + '</td>' +
+                    '<td>' + customer.email + '</td>' +
+                    '<td>' +
+                     '<button type="button" class="btn btn-primary add-customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
+                    '</td>' +
+                    '</tr>';
+                $customerTable.append(row);
+            });
+            // Unbind the click event before binding it again
+            $('.add-customer-btn').off('click').on('click', function() {
+                var customerId = $(this).data('id');
+                addCustomer(customerId);
+            });
+        },
+        error: function () {
+        }
+    });
+}
+
+function addCustomer(customerId) {
+    var id = $('#workflowId').val();
+
+    $.ajax({
+        url:'/workflows/' +id+ '/addCustomer?customerId=' + customerId,
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (customer) {
+            // Handle success
+        },
+        error: function () {
+            loadCustomers();
+            loadWorkflowCustomers();
+        }
+    });
+}
+
+$(document).ready(function () {
+    loadCustomers();
+    loadWorkflowCustomers();
+});
+
+function loadWorkflowCustomers() {
+    var id = $('#workflowId').val();
+    $.ajax({
+        url: '/workflows/'+id,
+        type: 'GET',
+        success: function (data) {
+            var $workflowCustomersTable = $('#workflowCustomers tbody');
+            $workflowCustomersTable.empty(); // Clear existing rows
+            $.each(data, function (index, customer) {
+                var row = '<tr>' +
+                    '<td>' + customer.id + '</td>' +
+                    '<td>' + customer.name + '</td>' +
+                    '<td>' + customer.email + '</td>' +
+                    '<td>' +
+                     '<button type="button" class="btn btn-primary add-customers-btn" data-id="' + customer.id + '">Add Customer</button>' +
+                    '</td>' +
+                    '</tr>';
+                $workflowCustomersTable.append(row);
+            });
+            // Unbind the click event before binding it again
+            $('.add-customers-btn').off('click').on('click', function() {
+                var customerId = $(this).data('id');
+                addCustomer(customerId);
+            });
+        },
+        error: function () {
+        }
+    });
+}
+</script>
+</div>
+</body>
+</html>

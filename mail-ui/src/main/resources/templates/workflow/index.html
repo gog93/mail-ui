@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Workflow</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="display-5 fw-bold m-0">Workflow</h1>
+                </div>
+
+                <div class="col-6">
+                    <a th:href="${#mvc.url('create-workflow').build()}"
+                       class="btn btn-outline-primary btn-sm float-right"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Create Workflow</a>
+                </div>
+                <div th:replace="layout/alert::alert" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="card card-solid">
+            <div class="card-body pb-0">
+                <table id="workflow" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <div th:replace="layout/delete::delete"></div>
+    <th:block layout:fragment="script">
+        <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+        <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+        <script th:src="@{/js/workflow.js}"></script>
+        <script th:src="@{/js/modal.delete.js}"></script>
+        <script th:src="@{/js/all.js}"></script>
+    </th:block>
+</div>
+</body>
+</html>

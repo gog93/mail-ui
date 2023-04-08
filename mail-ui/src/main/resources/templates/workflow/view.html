@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Workflow Details</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="display-5 fw-bold m-0">Workflow</h1>
+                </div>
+
+                <div class="col-6">
+                    <a th:href="@{/workflow/{workflowId}/create-email(workflowId=${workflowId})}"
+                       class="btn btn-outline-primary btn-sm float-right"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Add Email</a>
+                </div>
+                <div th:replace="layout/alert::alert" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="card card-solid">
+            <div class="card-body pb-0">
+                <table id="workflow" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Mail</th>
+                        <th>Status</th>
+                        <th>Date and time</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:unless="${#lists.isEmpty(workflow.mails)}" th:each="mail: ${workflow.mails}">
+                            <td th:text="${mail.id}">1</td>
+                            <td th:text="${mail.subject}"></td>
+                            <td th:text="${mail.status.name}"> </td>
+                            <td th:text="${#dates.format(mail.sentAt, 'yyyy-MM-dd hh:mm a')}"> </td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" th:href="@{/workflow/{workflowId}/mail/{mailId}/edit(workflowId=${workflowId}, mailId=${mail.id})}">Edit</a>
+                                <a class="btn btn-sm btn-success" href="#">View</a>
+                                <a href="#"
+                                   class="btn btn-sm btn-danger"
+                                   data-title="Delete Workflow mail"
+                                   data-toggle="modal"
+                                   data-target="#deleteModal"
+                                   data-message="Are you sure you want to delete workflow mail?"
+                                   data-method="delete"
+                                   th:data-href="@{/workflow/{workflowId}/mail/{mailId}/delete(workflowId=${workflowId}, mailId=${mail.id})}"
+                                   th:data-delete-token="${_csrf.token}"
+                                   th:data-delete-parameter-name="${_csrf.parameterName}"
+                                >Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <div th:replace="layout/delete::delete"></div>
+</div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/modal.delete.js}"></script>
+</th:block>
+</body>
+</html>
