@@ -59,7 +59,6 @@ public class WorkflowController {
         if (bindingResult.hasErrors()) {
             return CREATE_VIEW;
         }
-
         this.workflowService.save(workflow);
         ra.addFlashAttribute(Common.SUCCESS_MESSAGE, "Workflow added successfully.");
         return Common.REDIRECT + Routes.Workflow.GET;

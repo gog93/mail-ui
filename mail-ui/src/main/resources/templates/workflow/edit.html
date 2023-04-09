@@ -56,11 +56,44 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="half0">
+                                <div class="half">
+                                    <p> All Collaborators</p>
 
+                                    <table id="customerTable" class="table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                                </div>
+                            <div class="half2">
+                                <p> Selected Collaborators</p>
+
+                                <table id="workflowCustomers" class="table">
+                                <thead>
+                                <tr >
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button id="btn" type="submit" class="btn btn-primary">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +105,107 @@
 
         </div>
     </section>
+    <script >
+        function loadCustomers() {
+
+            $.ajax({
+                url: '/customers',
+                type: 'GET',
+                success: function (data) {
+                    var $customerTable = $('#customerTable tbody');
+                    $customerTable.empty(); // Clear existing rows
+                    $.each(data, function (index, customer) {
+                        var row = '<tr>' +
+                            '<td>' + customer.id + '</td>' +
+                            '<td>' + customer.name + '</td>' +
+                            '<td>' + customer.email + '</td>' +
+                            '<td>' +
+                            '<button type="button" class="btn btn-primary add-customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
+                            '</td>' +
+                            '</tr>';
+                        $customerTable.append(row);
+                    });
+                    // Unbind the click event before binding it again
+                    $('.add-customer-btn').off('click').on('click', function() {
+                        var customerId = $(this).data('id');
+                        addCustomer(customerId);
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+        function addCustomer(customerId) {
+
+            $.ajax({
+                url:'/workflow/create/addCustomer?customerId=' + customerId,
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (customer) {
+                    // Handle success
+                },
+                error: function () {
+                    loadCustomers();
+                    loadWorkflowCustomers();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            loadCustomers();
+            loadWorkflowCustomers();
+        });
+
+        function loadWorkflowCustomers() {
+            var id = $('#workflowId').val();
+            $.ajax({
+                url: '/workflow/create/',
+                type: 'GET',
+                success: function (data) {
+                    var $workflowCustomersTable = $('#workflowCustomers tbody');
+                    $workflowCustomersTable.empty(); // Clear existing rows
+                    $.each(data, function (index, customer) {
+                        var row = '<tr  th:field="*{customer}">' +
+                            '<td id="id">' + customer.id + '</td>' +
+                            '<td id="name">' + customer.name + '</td>' +
+                            '<td id="email">' + customer.email + '</td>' +
+                            '<td>' +
+                            '<button id ="remove" type="button" class="btn btn-primary add-customers-btn" data-id="' + customer.id + '">Remove</button>' +
+                            '</td>' +
+                            '</tr>';
+                        $workflowCustomersTable.append(row);
+                    });
+                    // Unbind the click event before binding it again
+                    $('.add-customers-btn').off('click').on('click', function() {
+                        var customerId = $(this).data('id');
+                        removeCustomer(customerId);
+                    });
+                },
+                error: function () {
+                }
+            });
+        }
+
+        function removeCustomer(customerId) {
+            $.ajax({
+                url:'/workflow/remove/' + customerId,
+                type: 'post',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (customer) {
+                    // Handle success
+                },
+                error: function () {
+                    loadCustomers();
+                    loadWorkflowCustomers();
+                }
+            });
+        }
+
+
+    </script>
 </div>
 </body>
 </html>

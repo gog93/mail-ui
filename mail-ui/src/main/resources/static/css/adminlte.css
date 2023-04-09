@@ -53027,3 +53027,26 @@ a.text-muted:hover {
     border-radius: 0.375rem;
     opacity: .5;
 }
+#remove {
+    background-color: darkred;
+}
+
+ .half {
+     width: 40%;
+     padding: 0px;
+     margin-left: 0px;
+ }
+
+.half2 {
+    width: 40%;
+    margin-left: 3%;
+    height: 200%;
+
+
+}
+#btn {
+    margin-top: 70px;
+}
+.half0 {
+    display: flex;
+}

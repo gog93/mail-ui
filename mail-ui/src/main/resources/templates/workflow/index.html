@@ -40,7 +40,16 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                    <tr th:each="workflow : ${workflow}">
+                        <th>S.N</th>
+                        <th th:text="${workflow.getName}">>Name</th>
+                        <th th:text="${workflow.getDescription()}">Description</th>
+                        <th >Created At</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

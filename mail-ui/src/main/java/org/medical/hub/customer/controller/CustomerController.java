@@ -45,16 +45,22 @@ public class CustomerController {
         return allCustomer;
     }
 
-    @PostMapping("/workflows/{id}/addCustomer")
+    @PostMapping("/workflow/create/addCustomer")
     @ResponseBody
-    public ResponseEntity<Void> addCustomerToWorkflow(@PathVariable("id") Long id, @RequestParam Long customerId) {
+    public ResponseEntity<Void> addCustomerToWorkflow( @RequestParam Long customerId) {
+        selectedService.update(customerId);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/workflow/remove/{customerId}")
+    @ResponseBody
+    public ResponseEntity<Void> removeCustomerToWorkflow( @PathVariable Long customerId) {
         selectedService.update(customerId);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/workflows/{id}")
+    @GetMapping("/workflow/create/")
     public @ResponseBody
-    List<Customer> findAllCustomerInWorkflowById(@PathVariable("id") Long id) {
+    List<Customer> findAllCustomerInWorkflowById() {
         List<Customer> allCustomer = new ArrayList<>();
         for (SelectedCustomer selected : selectedService.findAll()) {
             if (("selected").equals(selected.getStatus())) {

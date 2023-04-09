@@ -30,7 +30,12 @@ public class SelectedCustomerServiceImpl implements SelectedCustomerService {
 
     public void update(Long customerId) {
         SelectedCustomer selected = selectedCustomerRepository.findByCustomerId(customerId);
-        selected.setStatus("selected");
+        if (selected.getStatus().equals("selected")) {
+            selected.setStatus("unselected");
+
+        } else {
+            selected.setStatus("selected");
+        }
         selectedCustomerRepository.save(selected);
     }
 

@@ -1,26 +1,13 @@
 package org.medical.hub.workflow;
 
-import org.apache.commons.lang3.StringUtils;
-//import org.medical.hub.datatable.*;
-//import org.medical.hub.dto.EmailTemplatesDataTable;
-//import org.medical.hub.mail.MailRepository;
-//import org.medical.hub.mail.MailService;
-//import org.medical.hub.mailtemplates.EmailTemplate;
-import org.medical.hub.models.User;
-//import org.medical.hub.repository.SearchCriteria;
-//import org.medical.hub.repository.SearchOperation;
-//import org.medical.hub.services.LoggedinUser;
+import org.medical.hub.customer.Customer;
+import org.medical.hub.customer.SelectedCustomer;
+import org.medical.hub.customer.service.SelectedCustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,20 +17,22 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     private Logger logger = LoggerFactory.getLogger(WorkflowServiceImpl.class);
 
-//    private final MailRepository mailRepository;
+    //    private final MailRepository mailRepository;
     private final WorkflowRepository workflowRepository;
+    private final SelectedCustomerService selectedCustomerService;
 //    private final MailService mailService;
 //    private final LoggedinUser loggedinUser;
 
     @Autowired
-    public WorkflowServiceImpl(WorkflowRepository workflowRepository/*,
+    public WorkflowServiceImpl(WorkflowRepository workflowRepository,/*,
                                LoggedinUser loggedinUser,
                                MailService mailService,
-                               MailRepository mailRepository*/) {
+                               MailRepository mailRepository*/SelectedCustomerService selectedCustomerService) {
         this.workflowRepository = workflowRepository;
 //        this.loggedinUser = loggedinUser;
 //        this.mailService = mailService;
 //        this.mailRepository = mailRepository;
+        this.selectedCustomerService = selectedCustomerService;
     }
 
     @Override
@@ -56,6 +45,13 @@ public class WorkflowServiceImpl implements WorkflowService {
 //        workflow.setCreatedAt(System.currentTimeMillis());
 //        workflow.setUpdatedAt(System.currentTimeMillis());
 
+        List<SelectedCustomer> selected = selectedCustomerService.findByStatus("selected");
+        List<Customer> customer=new ArrayList<>();
+
+        for (SelectedCustomer selected1: selected){
+           customer.add(selected1.getCustomer());
+        }
+        workflow.setCustomer(customer);
 //        User user = this.loggedinUser.currentLoginUser();
 //        workflow.setUser(user);
 
@@ -98,7 +94,14 @@ public class WorkflowServiceImpl implements WorkflowService {
         workflow.setName(request.getName());
         workflow.setDescription(request.getDescription());
 //        workflow.setUpdatedAt(System.currentTimeMillis());
+        List<SelectedCustomer> selected = selectedCustomerService.findByStatus("selected");
 
+        List<Customer> customer=new ArrayList<>();
+
+        for (SelectedCustomer selected1: selected){
+            customer.add(selected1.getCustomer());
+        }
+        workflow.setCustomer(customer);
         workflowRepository.save(workflow);
         logger.info("Workflow details updated successfully.");
     }

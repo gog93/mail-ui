@@ -7,24 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 </head>
-SELECT, INPUT[type="text"] {
-width: 160px;
-box-sizing: border-box;
-}
-SECTION {
-padding: 8px;
-background-color: #f0f0f0;
-overflow: auto;
-}
-SECTION > DIV {
-float: left;
-padding: 4px;
-}
-SECTION > DIV + DIV {
-width: 40px;
-text-align: center;
-}
-</style>
+
 <body>
 
 <div layout:fragment="content" th:remove="tag">
@@ -76,6 +59,9 @@ text-align: center;
 
                                 </div>
                             </div>
+                            <div class="half0">
+                            <div class="half">
+                            <p> All Collaborators</p>
                             <table id="customerTable" class="table">
                                 <thead>
                                 <tr>
@@ -88,10 +74,13 @@ text-align: center;
                                 <tbody>
                                 </tbody>
                             </table>
+                    </div>
+                            <div class="half2">
+                                <p> Selected Collaborators</p>
 
-                            <table id="workflowCustomers" class="table">
+                                <table id="workflowCustomers" class="table">
                                 <thead>
-                                <tr>
+                                <tr >
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
@@ -101,10 +90,12 @@ text-align: center;
                                 <tbody>
                                 </tbody>
                             </table>
+                            </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button id="btn" type="submit" class="btn btn-primary">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +122,7 @@ text-align: center;
                     '<td>' + customer.name + '</td>' +
                     '<td>' + customer.email + '</td>' +
                     '<td>' +
-                     '<button type="button" class="btn btn-primary add-customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
+                     '<button type="button"  class="btn btn-primary add-customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
                     '</td>' +
                     '</tr>';
                 $customerTable.append(row);
@@ -148,10 +139,9 @@ text-align: center;
 }
 
 function addCustomer(customerId) {
-    var id = $('#workflowId').val();
 
     $.ajax({
-        url:'/workflows/' +id+ '/addCustomer?customerId=' + customerId,
+        url:'/workflow/create/addCustomer?customerId=' + customerId,
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',
@@ -173,18 +163,18 @@ $(document).ready(function () {
 function loadWorkflowCustomers() {
     var id = $('#workflowId').val();
     $.ajax({
-        url: '/workflows/'+id,
+        url: '/workflow/create/',
         type: 'GET',
         success: function (data) {
             var $workflowCustomersTable = $('#workflowCustomers tbody');
             $workflowCustomersTable.empty(); // Clear existing rows
             $.each(data, function (index, customer) {
-                var row = '<tr>' +
-                    '<td>' + customer.id + '</td>' +
-                    '<td>' + customer.name + '</td>' +
-                    '<td>' + customer.email + '</td>' +
+                var row = '<tr  th:field="*{customer}">' +
+                    '<td id="id">' + customer.id + '</td>' +
+                    '<td id="name">' + customer.name + '</td>' +
+                    '<td id="email">' + customer.email + '</td>' +
                     '<td>' +
-                     '<button type="button" class="btn btn-primary add-customers-btn" data-id="' + customer.id + '">Add Customer</button>' +
+                     '<button type="button" id="remove" class="btn btn-primary add-customers-btn" data-id="' + customer.id + '">Remove</button>' +
                     '</td>' +
                     '</tr>';
                 $workflowCustomersTable.append(row);
@@ -192,13 +182,31 @@ function loadWorkflowCustomers() {
             // Unbind the click event before binding it again
             $('.add-customers-btn').off('click').on('click', function() {
                 var customerId = $(this).data('id');
-                addCustomer(customerId);
+                removeCustomer(customerId);
             });
         },
         error: function () {
         }
     });
 }
+
+   function removeCustomer(customerId) {
+       $.ajax({
+           url:'/workflow/remove/' + customerId,
+           type: 'post',
+           contentType: 'application/json',
+           dataType: 'json',
+           success: function (customer) {
+               // Handle success
+           },
+           error: function () {
+               loadCustomers();
+               loadWorkflowCustomers();
+           }
+       });
+   }
+
+
 </script>
 </div>
 </body>
