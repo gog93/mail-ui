@@ -2,10 +2,8 @@ package org.medical.hub.workflow;
 
 import org.medical.hub.common.Common;
 import org.medical.hub.common.Routes;
-//import org.medical.hub.datatable.DataTableRequest;
 import org.medical.hub.customer.Customer;
 import org.medical.hub.customer.SelectedCustomer;
-import org.medical.hub.customer.service.CustomerService;
 import org.medical.hub.customer.service.SelectedCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,18 +25,17 @@ public class WorkflowController {
     private static final String VIEW_VIEW = "workflow/view";
 
     private final WorkflowService workflowService;
-    private final CustomerService customerService;
     private final SelectedCustomerService selectedService;
 
     @Autowired
-    public WorkflowController(WorkflowService workflowService, CustomerService customerService, SelectedCustomerService selectedService) {
+    public WorkflowController(WorkflowService workflowService, SelectedCustomerService selectedService) {
         this.workflowService = workflowService;
-        this.customerService = customerService;
         this.selectedService = selectedService;
     }
 
     @GetMapping(value = Routes.Workflow.GET, name = "get-workflow")
     public String index(Model model) {
+        selectedService.delete();
         var emailTemplates = this.workflowService.findAll();
         model.addAttribute("workflow", emailTemplates);
 
@@ -66,6 +63,11 @@ public class WorkflowController {
 
     @GetMapping(value = Routes.Workflow.EDIT)
     public String edit(@PathVariable("workflowId") Long id, Model model) {
+        selectedService.delete();
+        for(Customer customer:workflowService.findById(id).get().getCustomer() ){
+            selectedService.save(new SelectedCustomer(1L,"selected", customer));
+        }
+
         Workflow template = this.workflowService.findById(id).get();
 
         var workflowRequest = new CreateWorkflowRequest();
@@ -108,7 +110,7 @@ public class WorkflowController {
 //    }
 
     @GetMapping(value = Routes.Workflow.VIEW)
-    public String view(@PathVariable("workflowId") Long workflowId, Model model){
+    public String view(@PathVariable("workflowId") Long workflowId, Model model) {
 
         var workflow = this.workflowService.findById(workflowId);
         model.addAttribute("workflow", workflow);
@@ -121,38 +123,17 @@ public class WorkflowController {
     private CreateWorkflowRequest getWorkflow() {
         return new CreateWorkflowRequest();
     }
+
     @GetMapping(value = Routes.Workflow.CREATE, name = "create-workflow")
-//    public String workflow(Model model, @PathVariable("id") Long id) {
     public String workflow(Model model) {
         selectedService.delete();
-        List<SelectedCustomer> all=selectedService.findAll();
-//        for(Customer customer:workflowService.findById(id).get().getCustomer() ){
-//            selectedService.save(new SelectedCustomer(1L,"selected", customer));
-//        }
-//        Workflow workflowById = workflowService.findById(id).get();
-//        List<Customer> customerById = workflowService.findById(id).get().getCustomer();
+        List<SelectedCustomer> all = selectedService.findAll();
         List<Customer> allCustomer = new ArrayList<>();
-//        for (Customer customer : customerService.findAll()) {
-//            if (!checkWorkFlowInCustomer(customer,id)) {
-//                allCustomer.add(customer);
-//            }
-//        }
-
-//        model.addAttribute("customerById", customerById);
         model.addAttribute("customers", allCustomer);
         model.addAttribute("customer", new Customer());
-//        model.addAttribute("workflowById", workflowById);
         model.addAttribute("workflow", new Workflow());
 
         return CREATE_VIEW;
     }
-    private boolean checkWorkFlowInCustomer(Customer customer, Long id) {
-        boolean check = false;
-        for (Workflow workflowBy : customer.getWorkflow()) {
-            if (workflowBy.getId() == id) {
-                check = true;
-            }
-        }
-        return check;
-    }
+
 }

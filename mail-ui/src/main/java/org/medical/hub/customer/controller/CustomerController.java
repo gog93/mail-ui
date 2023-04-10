@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping()
 public class CustomerController {
@@ -61,12 +62,10 @@ public class CustomerController {
     @GetMapping("/workflow/create/")
     public @ResponseBody
     List<Customer> findAllCustomerInWorkflowById() {
-        List<Customer> allCustomer = new ArrayList<>();
-        for (SelectedCustomer selected : selectedService.findAll()) {
-            if (("selected").equals(selected.getStatus())) {
-                allCustomer.add(selected.getCustomer());
-            }
-        }
+        List<Customer> allCustomer = selectedService.findAll().stream()
+                .filter(selected -> "selected".equals(selected.getStatus()))
+                .map(SelectedCustomer::getCustomer)
+                .collect(Collectors.toList());
 
         return allCustomer;
     }
