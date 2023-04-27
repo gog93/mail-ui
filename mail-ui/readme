@@ -1,0 +1,7 @@
+changes!!!
+
+add     <link rel="stylesheet" th:href="@{/css/style.css}"> in layout/base.html
+
+add style.css in css directory
+
+change button class adminIte.js

@@ -3082,13 +3082,13 @@ function loadCustomers() {
             '<td>' + customer.name + '</td>' +
             '<td>' + customer.email + '</td>' +
             '<td>' +
-            '<button type="button"  class="btn btn-primary add-customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
+            '<button type="button"  class="btn btn-primary customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
             '</td>' +
             '</tr>';
         $customerTable.append(row);
       });
       // Unbind the click event before binding it again
-      $('.add-customer-btn').off('click').on('click', function() {
+      $('.customer-btn').off('click').on('click', function() {
         var customerId = $(this).data('id');
         addCustomer(customerId);
       });
