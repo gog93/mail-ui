@@ -90,7 +90,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public String setActiveMailProfile(String profileName) {
         List<MailProfile> mailProfiles = mailProfileRepository.findAll();
-        MailProfile mailProfile = mailProfileRepository.findByProfileName(profileName.trim().replaceAll(" ", "_"));
+        MailProfile mailProfile = mailProfileRepository.findByProfileName(profileName.trim().replaceAll(" ", "_")).get();
 
         if (mailProfile != null) {
             mailProfiles.stream()
@@ -117,7 +117,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public String softDeleteMailProfile(String profileName) {
         MailProfile mailProfile = mailProfileRepository.findByProfileName(profileName.trim()
-                .replaceAll(" ", "_"));
+                .replaceAll(" ", "_")).get();
 
         if (mailProfile != null) {
             try {
@@ -150,6 +150,11 @@ public class MailServiceImpl implements MailService {
     @Override
     public Page<MailProfile> findAll(String search, Pageable pageable) {
         return mailProfileRepository.findAll(search,pageable);
+    }
+
+    @Override
+    public Optional<MailProfile> findByProfileName(String profileName) {
+        return   mailProfileRepository.findByProfileName( profileName);
     }
 
 

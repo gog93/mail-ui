@@ -16,5 +16,6 @@ public class Notification {
     private Long id;
     private String providerName;
     private Date date;
-    private int count;
+    private Long emailId;
+
 }

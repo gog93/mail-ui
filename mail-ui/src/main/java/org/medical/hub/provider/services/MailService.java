@@ -23,4 +23,6 @@ public interface MailService {
     Optional<MailProfile> findById(Long id);
 
     Page<MailProfile> findAll(String search, Pageable pageable);
+
+    Optional<MailProfile> findByProfileName(String profileName);
 }

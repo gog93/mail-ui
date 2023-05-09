@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Workflow</title>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="display-5 fw-bold m-0">Provider</h1>
+                </div>
+
+                <div class="col-6">
+                    <a href="/api/v1/mail/profile"
+                       class="btn btn-outline-primary btn-sm float-right"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Add Provider</a>
+                </div>
+                <div th:replace="layout/alert::alert" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="card card-solid">
+            <div class="card-body pb-0">
+                <table id="provider" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th style="width:100px">Name</th>
+                        <th  style="padding-left:750px">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <ul id="page" class="pagination justify-content-center" style="margin:20px 0; cursor: pointer;"></ul>
+
+            </div>
+        </div>
+    </section>
+    <div th:replace="layout/delete::delete"></div>
+    <th:block layout:fragment="script">
+        <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+        <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+        <script th:src="@{/js/workflow.js}"></script>
+        <script th:src="@{/js/modal.delete.js}"></script>
+        <script th:src="@{/js/table-pagination.js}"></script>
+        <script th:src="@{/js/all.js}"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    </th:block>
+</div>
+</body>
+</html>

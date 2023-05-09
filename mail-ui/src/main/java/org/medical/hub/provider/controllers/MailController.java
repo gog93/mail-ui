@@ -4,6 +4,7 @@ package org.medical.hub.provider.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.medical.hub.provider.dtos.NewMailProfileDto;
+import org.medical.hub.provider.entities.MailProfile;
 import org.medical.hub.provider.services.MailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,9 +37,12 @@ public class MailController {
         model.addAttribute("provider", new NewMailProfileDto());
         return "provider/create";
     }
-    @GetMapping("/view")
-    public String view(Model model) {
-        return "example";
+    @GetMapping("/view/{profileName}")
+    public String view(Model model,@PathVariable("profileName") String profileName) {
+       MailProfile mailProfile= service.findByProfileName(profileName).get();
+        model.addAttribute("provider",mailProfile)  ;
+
+        return "provider/view";
     }
 
 
@@ -50,7 +54,7 @@ public class MailController {
 
 
     @PatchMapping("/profile")
-    public ResponseEntity<String> setActiveMailProfile(@RequestParam(name = "ProfileName") String profileName) {
+    public ResponseEntity<String> setActiveMailProfile(String profileName) {
         return ResponseEntity.ok(service.setActiveMailProfile(profileName));
     }
 

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Update Workflow</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1 class="m-0">Workflow</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-body">
+                        <form
+                                th:object="${provider}"
+                                id="create-workflow"
+                                method="POST"
+                                th:action="@{/api/v1/mail/profile}">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="rule-name">Profile  Name</label>
+                                        <input th:field="*{profileName}" type="text" id="rule-name" class="form-control form-control-sm" placeholder="Name" />
+                                        <!--                                        <p class="text text-danger"-->
+                                        <!--                                           th:if="${#fields.hasErrors('name')}"-->
+                                        <!--                                           th:errors="*{name}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="row-type">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="description">Host</label>
+                                            <input id="description"  th:field="*{host}"  type="text" class="form-control form-control-sm" placeholder="Host">
+                                            <!--                                            <p class="text text-danger"-->
+                                            <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                            <!--                                               th:errors="*{description}"></p>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="row-type">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="description">Port</label>
+                                            <input id="port"  th:field="*{port}"  type="text" class="form-control form-control-sm" placeholder="Port">
+                                            <!--                                            <p class="text text-danger"-->
+                                            <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                            <!--                                               th:errors="*{description}"></p>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">Username</label>
+                                        <input id="username"  th:field="*{username}"  type="text" class="form-control form-control-sm" placeholder="Username">
+                                        <!--                                            <p class="text text-danger"-->
+                                        <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                        <!--                                               th:errors="*{description}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">Password</label>
+                                        <input id="password"  th:field="*{password}"  type="text" class="form-control form-control-sm" placeholder="Password">
+                                        <!--                                            <p class="text text-danger"-->
+                                        <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                        <!--                                               th:errors="*{description}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">Transport protocol</label>
+                                        <input id="transportProtocol"  th:field="*{transportProtocol}"  type="text" class="form-control form-control-sm" placeholder="Transport protocol">
+                                        <!--                                            <p class="text text-danger"-->
+                                        <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                        <!--                                               th:errors="*{description}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">isSmtpAuth</label>
+                                        <select id="isSmtpAuth"  th:field="*{isSmtpAuth}"  type="text" class="form-control form-control-sm" placeholder="isSmtpAuth">
+                                            <option type="checkBox" value="true"> YES</option>
+                                            <option type="checkBox"  value="false"> NO</option>
+                                        </select>
+                                        <!--                                            <p class="text text-danger"-->
+                                        <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                        <!--                                               th:errors="*{description}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">isSslTrust</label>
+                                        <select id="isSslTrust"  th:field="*{isSslTrust}"  type="text" class="form-control form-control-sm" placeholder="isSslTrust">
+                                            <option type="checkBox "value="true"> YES</option>
+                                            <option type="checkBox"  value="false"> NO</option>
+                                        </select>
+                                        <!--                                            <p class="text text-danger"-->
+                                        <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                        <!--                                               th:errors="*{description}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">sslProtocols</label>
+                                        <input id="sslProtocols"  th:field="*{sslProtocols}"  type="text" class="form-control form-control-sm" placeholder="sslProtocols">
+                                        <!--                                            <p class="text text-danger"-->
+                                        <!--                                               th:if="${#fields.hasErrors('description')}"-->
+                                        <!--                                               th:errors="*{description}"></p>-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <button id="btn" type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

@@ -36,5 +36,4 @@ public class MailProfile {
     private Boolean isActiveProfile;
     private Boolean isDeleted;
 
-
 }

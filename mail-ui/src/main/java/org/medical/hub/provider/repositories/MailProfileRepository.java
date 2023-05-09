@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
+
 @Repository
 
 public interface MailProfileRepository extends JpaRepository<MailProfile, Long> {
@@ -15,7 +18,7 @@ public interface MailProfileRepository extends JpaRepository<MailProfile, Long> 
     MailProfile findByIsActiveProfile(boolean activeStatus);
 
 
-    MailProfile findByProfileName(String profileName);
+   Optional< MailProfile> findByProfileName(String profileName);
     @Query("SELECT e FROM MailProfile e WHERE e.profileName LIKE %:search%")
     Page<MailProfile> findAll(@Param("search") String search, Pageable pageable);
 

@@ -23,7 +23,7 @@ $(document).ready(function () {
                         '<td>' + note.profileName + '</td>' +
                         '<td style="padding-left:650px">' +
                         '<button type="button" id="edit" class="btn customer-btn" data-id="' + note.profileName + '">Edit</button>' +
-                        '<button type="button" id="view" class="btn btn-primary-view" data-id="' + note.profileName + '">View</button>' +
+                        '<a href="/api/v1/mail/view/' + encodeURIComponent(note.profileName) + '" class="btn btn-primary-view" data-id="' + note.profileName + '">View</a>' +
                         '<button type="button" id="delete" class="btn add-customers-btn" data-id="' + note.profileName + '">Delete</button>' +
                         '</td>' +
                         '</tr>';
