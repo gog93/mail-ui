@@ -1,9 +1,9 @@
 package org.medical.hub.workflow;
 
 import lombok.Data;
+import org.hibernate.annotations.Columns;
 import org.medical.hub.customer.Customer;
-import org.medical.hub.mail.UserEmails;
-import org.medical.hub.models.User;
+import org.medical.hub.provider.entities.MailProfile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,7 +30,7 @@ public class Workflow {
             inverseJoinColumns = @JoinColumn(name = "customer_id"))
     private List<Customer> customer;
 
-//    @Column(name = "created_at", nullable = false, updatable = false)
+    //    @Column(name = "created_at", nullable = false, updatable = false)
 //    private Long createdAt;
 //
 //    @Column(name = "updated_at", nullable = false)
@@ -42,4 +42,8 @@ public class Workflow {
 //
 //    @OneToMany(mappedBy = "workflow")
 //    private List<UserEmails> mails;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mailProfile_id")
+    private MailProfile mailProfile;
 }

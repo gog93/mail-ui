@@ -3,6 +3,7 @@ package org.medical.hub.workflow;
 import lombok.Getter;
 import lombok.Setter;
 import org.medical.hub.customer.Customer;
+import org.medical.hub.provider.entities.MailProfile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,4 +18,5 @@ public class CreateWorkflowRequest {
 
     @NotEmpty(message = "Description is required.")
     private String description;
+    private MailProfile mailProfile;
 }

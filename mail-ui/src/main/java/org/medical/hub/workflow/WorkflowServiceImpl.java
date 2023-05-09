@@ -3,11 +3,14 @@ package org.medical.hub.workflow;
 import org.medical.hub.customer.Customer;
 import org.medical.hub.customer.SelectedCustomer;
 import org.medical.hub.customer.service.SelectedCustomerService;
+import org.medical.hub.provider.entities.MailProfile;
+import org.medical.hub.provider.services.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,31 +23,33 @@ public class WorkflowServiceImpl implements WorkflowService {
     //    private final MailRepository mailRepository;
     private final WorkflowRepository workflowRepository;
     private final SelectedCustomerService selectedCustomerService;
-//    private final MailService mailService;
+    private final MailService mailService;
 //    private final LoggedinUser loggedinUser;
 
     @Autowired
     public WorkflowServiceImpl(WorkflowRepository workflowRepository,/*,
                                LoggedinUser loggedinUser,
                                MailService mailService,
-                               MailRepository mailRepository*/SelectedCustomerService selectedCustomerService) {
+                               MailRepository mailRepository*/SelectedCustomerService selectedCustomerService, MailService mailService) {
         this.workflowRepository = workflowRepository;
 //        this.loggedinUser = loggedinUser;
 //        this.mailService = mailService;
 //        this.mailRepository = mailRepository;
         this.selectedCustomerService = selectedCustomerService;
+        this.mailService = mailService;
     }
 
     @Override
+    @Transactional
     public void save(CreateWorkflowRequest request) {
-
+      MailProfile providerById = mailService.findById(request.getMailProfile().getId()).get();
         logger.info("Saving the workflow details. Request: {}", request);
         Workflow workflow = new Workflow();
         workflow.setName(request.getName());
         workflow.setDescription(request.getDescription());
+        workflow.setMailProfile(providerById);
 //        workflow.setCreatedAt(System.currentTimeMillis());
 //        workflow.setUpdatedAt(System.currentTimeMillis());
-
         List<SelectedCustomer> selected = selectedCustomerService.findByStatus("selected");
         List<Customer> customer=new ArrayList<>();
 

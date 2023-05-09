@@ -5,6 +5,7 @@
 <head>
     <title>Create Email Templates</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/static/js/tables.js"></script>
 
 </head>
 
@@ -15,9 +16,10 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-12">
+                <div class="right-div" >
                     <h1 class="m-0">Workflow</h1>
                 </div>
+
             </div>
         </div>
     </div>
@@ -32,7 +34,18 @@
                               id="create-workflow"
                               method="POST"
                               th:action="${#mvc.url('save-workflow').build()}">
-
+                            <div class="left-div">
+                                <label for="department">Providers:</label>
+                                <select id="department" name="mailProfileId" th:field="*{mailProfile.id}" >
+                                    <option value="">Select Department</option>
+                                    <option th:each="dept : ${providers}"
+                                            th:value="${dept.id}"
+                                            th:text="${dept.profileName}"></option>
+                                </select>
+<!--                                <p class="text text-danger"-->
+<!--                                   th:if="${#fields.hasErrors('provider')}"-->
+<!--                                   th:errors="*{provider}"></p>-->
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">

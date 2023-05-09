@@ -5,6 +5,7 @@ import org.medical.hub.common.Routes;
 import org.medical.hub.customer.Customer;
 import org.medical.hub.customer.SelectedCustomer;
 import org.medical.hub.customer.service.SelectedCustomerService;
+import org.medical.hub.provider.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +26,13 @@ public class WorkflowController {
     private static final String VIEW_VIEW = "workflow/view";
 
     private final WorkflowService workflowService;
+    private final MailService mailService;
     private final SelectedCustomerService selectedService;
 
     @Autowired
-    public WorkflowController(WorkflowService workflowService, SelectedCustomerService selectedService) {
+    public WorkflowController(WorkflowService workflowService, MailService mailService, SelectedCustomerService selectedService) {
         this.workflowService = workflowService;
+        this.mailService = mailService;
         this.selectedService = selectedService;
     }
 
@@ -51,9 +54,10 @@ public class WorkflowController {
     @PostMapping(value = Routes.Workflow.GET, name = "save-workflow")
     public String save(@Valid @ModelAttribute("workflow") CreateWorkflowRequest workflow,
                        BindingResult bindingResult,
-                       RedirectAttributes ra) {
+                       RedirectAttributes ra,Model model) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("providers",mailService.findAllMails());
             return CREATE_VIEW;
         }
         this.workflowService.save(workflow);
@@ -127,9 +131,7 @@ public class WorkflowController {
     @GetMapping(value = Routes.Workflow.CREATE, name = "create-workflow")
     public String workflow(Model model) {
         selectedService.delete();
-        List<SelectedCustomer> all = selectedService.findAll();
-        List<Customer> allCustomer = new ArrayList<>();
-        model.addAttribute("customers", allCustomer);
+        model.addAttribute("providers", mailService.findAllMails());
         model.addAttribute("customer", new Customer());
         model.addAttribute("workflow", new Workflow());
 
