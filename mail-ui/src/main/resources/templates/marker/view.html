@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Workflow Details</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="display-5 fw-bold m-0">Provider</h1>
+                </div>
+
+                <div class="col-6">
+                    <a th:href="@{/workflow/{workflowId}/create-email(workflowId=${workflowId})}"
+                       class="btn btn-outline-primary btn-sm float-right"
+                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Add Email</a>
+                </div>
+                <div th:replace="layout/alert::alert" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h1 id="provider" th:text="${provider.profileName}" th:value="${provider.profileName}">
+            </h1>
+    </div>
+
+    <section class="content">
+        <div class="card card-solid">
+            <div class="card-body pb-0">
+                <div class="glanceyear-container">
+                    <h1 class="glanceyear-header">Glance Year
+                        <span class="glanceyear-quantity"></span>
+                    </h1>
+                    <div class="glanceyear-content" id="js-glanceyear">
+                    </div>
+
+                    <div class="glanceyear-summary">
+                        <div class="glanceyear-legend">
+                            Less&nbsp;
+                            <span style="background-color: #eee"></span>
+                            <span style="background-color: #c3dbda"></span>
+                            <span style="background-color: #5caeaa"></span>
+                            <span style="background-color: #277672"></span>
+                            &nbsp;More
+                        </div>
+                        Calendar with map data entered <br>
+                        <span id="debug"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div th:replace="layout/delete::delete"></div>
+</div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/modal.delete.js}"></script>
+
+</th:block>
+</body>
+</html>

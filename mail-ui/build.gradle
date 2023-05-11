@@ -20,6 +20,13 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation( "commons-io:commons-io:2.11.0")
+	implementation 'org.apache.httpcomponents:httpcore'
+	implementation 'org.apache.httpcomponents:httpmime'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// and a dependency on vert.x
+	implementation 'io.vertx:vertx-core:3.5.3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
