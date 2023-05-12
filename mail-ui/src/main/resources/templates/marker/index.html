@@ -28,44 +28,48 @@
             <div class="row">
                 <div class="col-12 card">
                     <div class="card-body">
-                        <p>Define the Helper marker for the system:
-                            Here is the scenario of how the user should interact with the application:
-                            • User types: @Helper
-                            • System responds: @Helper-
-                            • User adds marker name and period: @Helper-email.
-                            • System searches for settings for email markers in the database. If not found, it prompts:
-                            "Do you want to create a new marker with the name 'email' (y/n)?"
-                            If the user types 'y', the system responds:
-                            @Helper-email.
-                            --Template
-                            Please write here the template content. After finishing, go to the new line and type ‘— Wizard.’
-                            • After the user completes the template, type –Wizard on the new line. For example, something like this:
+                        <p>Define the Helper marker for the system:<br>
+                                Here is the scenario of how the user should interact with the application:<br>
+                                    • User types: @Helper<br>
+                                    • System responds: @Helper-<br>
+                                    • User adds marker name and period: @Helper-email.<br>
+                                    • System searches for settings for email markers in the database. If not found, it prompts:<br>
+                                    "Do you want to create a new marker with the name 'email' (y/n)?"<br>
+                            If the user types 'y', the system responds:<br>
+                                 @Helper-email.<br>
+                                --Template<br>
+                                 Please write here the template content. After finishing, go to the new line and type ‘— Wizard.’<br>
+                            • After the user completes the template, type –Wizard on the new line. For example, something like this:<br>
+<br>
+<br>
+                            @Helper-email.<br>
+                            --Template<br>
+                              Hello, {{name}}! This is an automated message from our system.<br>
+                              We are writing to inform you that your {{account}} is due for payment. Please log in to your account at {{url}} to make a payment.<br>
+                              Thank you for your prompt attention to this matter.<br>
+                             --Wizard<br>
 
-                            @Helper-email.
-                            --Template
-                            Hello, {{name}}! This is an automated message from our system.
-                            We are writing to inform you that your {{account}} is due for payment. Please log in to your account at {{url}} to make a payment.
-                            Thank you for your prompt attention to this matter.
-                            --Wizard
-
-
-                            • System will return the list of placeholders with the questions marks on the end:
-                            @Helper-email.
-                            --Template
-                            Hello, {{name}}! This is an automated message from our system.
-                            We are writing to inform you that your {{account}} is due for payment. Please log in to your account at {{url}} to make a payment.
-                            Thank you for your prompt attention to this matter.
-                            --Wizard
-                            name?
-                            account?
-                            url?
-                            • After the user completes the template by adding the questions, he adds @End at the end to indicate he wants to save the marker 'email' to the database.
-                            Something like this, for example:
-                            @Helper-email.
-                            --Template
-                            Hello, {{name}}! This is an automated message from our system.
-                            We are writing to inform you that your {{account}} is due for payment. Please log in to your account at {{url}} to make a payment.
-                            Thank you for your prompt attention to this matter. --Wizard</p>
+<br>
+<br>
+                            • System will return the list of placeholders with the questions marks on the end:<br>
+                            @Helper-email.<br>
+                            --Template<br>
+                            Hello, {{name}}! This is an automated message from our system.<br>
+                            We are writing to inform you that your {{account}} is due for payment. Please log in to your account at {{url}} to make a payment.<br>
+                            Thank you for your prompt attention to this matter.<br>
+                            --Wizard<br>
+                            name?<br>
+                            account?<br>
+                            url?<br>
+                            <br>
+                            <br>
+                            • After the user completes the template by adding the questions, he adds @End at the end to indicate he wants to save the marker 'email' to the database.<br>
+                            Something like this, for example:<br>
+                            @Helper-email.<br>
+                            --Template<br>
+                            Hello, {{name}}! This is an automated message from our system.<br>
+                            We are writing to inform you that your {{account}} is due for payment. Please log in to your account at {{url}} to make a payment.<br>
+                            Thank you for your prompt attention to this matter. --Wizard</p><br>
                     </div>
                 </div>
 

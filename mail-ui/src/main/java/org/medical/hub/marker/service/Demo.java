@@ -37,7 +37,7 @@ public class Demo {
     private String folderPath = "C:\\Users\\on-off\\IdeaProjects\\mail-ui\\mail-ui\\folder\\example1.txt";
 
 
-    private String baseUrl = "http://localhost:8081/template";
+    private String baseUrl = "http://localhost:8080/template";
 
     @Scheduled(fixedRate = 100)
     public void run() {

@@ -25,34 +25,26 @@
             </div>
         </div>
     </div>
-    <div>
-        <h1 id="provider" th:text="${provider.profileName}" th:value="${provider.profileName}">
-            </h1>
-    </div>
+
 
     <section class="content">
         <div class="card card-solid">
             <div class="card-body pb-0">
-                <div class="glanceyear-container">
-                    <h1 class="glanceyear-header">Glance Year
-                        <span class="glanceyear-quantity"></span>
-                    </h1>
-                    <div class="glanceyear-content" id="js-glanceyear">
-                    </div>
+                <table id="marker" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                    <div class="glanceyear-summary">
-                        <div class="glanceyear-legend">
-                            Less&nbsp;
-                            <span style="background-color: #eee"></span>
-                            <span style="background-color: #c3dbda"></span>
-                            <span style="background-color: #5caeaa"></span>
-                            <span style="background-color: #277672"></span>
-                            &nbsp;More
-                        </div>
-                        Calendar with map data entered <br>
-                        <span id="debug"></span>
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -61,6 +53,55 @@
 <th:block layout:fragment="script">
     <script th:src="@{/js/modal.delete.js}"></script>
 
+
+<script>
+
+        function loadMarkers() {
+            $.ajax({
+                url: '/marker/template-list',
+                type: 'GET',
+                success: function(data) {
+                    var $markerTable = $('#marker tbody');
+                    $markerTable.empty(); // Clear existing rows
+
+                    // Parse the JSON response into an object
+                    var parsedData = JSON.parse(data);
+
+                    $.each(parsedData, function(index, template) {
+                        var row = '<tr>' +
+                            '<td>' + ++index + '</td>' +
+                            '<td>' + template.tag + '</td>' +
+                            '<td>' + template.templateContent + '</td>' +
+                            '<td>' + template.createdBy + '</td>' +
+                            '<td>' + template.createdAt + '</td>' +
+                            '<td>' +
+                            '<button type="button" id="edit" class="btn customer-btn" data-id="' + template.id + '">Edit</button>' +
+                            '<a  href="/api/v1/mail/view/' + encodeURIComponent(template.id) + '" class="btn btn-primary-view" data-id="' + template.id + '">View</a>' +
+                            '<button type="button" id="delete" class="btn delete-btn" data-id="' + template.id + '">Delete</button>' +
+                            '</td>' +
+                            '</tr>';
+                        $markerTable.append(row);
+                    });
+
+                    // Unbind the click event before binding it again
+                    $('.customer-btn').off('click').on('click', function() {
+                        var customerId = $(this).data('id');
+                        addCustomer(customerId);
+                    });
+                },
+                error: function() {
+                    // Handle the error appropriately
+                }
+            });
+
+
+    }
+
+    $(document).ready(function () {
+        loadMarkers();
+    });
+
+</script>
 </th:block>
 </body>
 </html>
