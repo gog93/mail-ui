@@ -91,7 +91,7 @@
                             '<td>' + template.createdBy + '</td>' +
                             '<td>' + template.createdAt + '</td>' +
                             '<td>' +
-                            '<a  href="/marker-page/template/edit?tag=' + encodeURIComponent(template.tag) + '" class="btn btn-primary-view" data-id="' + template.id + '">Edit</a>' +
+                            '<a id="edit" href="/marker-page/template/edit?tag=' + encodeURIComponent(template.tag) + '" class="btn btn-primary-view" data-id="' + template.id + '" value="' + template.tag + '">Edit</a>' +
                             '<a  href="/marker-page/view-template?tag=' + encodeURIComponent(template.tag) + '" class="btn btn-primary-view" data-id="' + template.id + '">View</a>' +
                             '<button type="button" id="popUp" class="btn delete-btn" data-id="' + template.tag + '">Delete</button>' +
                             '</td>' +
@@ -116,7 +116,7 @@
     $(document).ready(function () {
         loadMarkers();
         $(document).on("click", "#del", function () {
-            var tag = document.getElementById('edit').value;
+            var tag =$(this).val();
 
             $.ajax({
                 url:'/marker/view/delete-template/' + tag,
@@ -135,6 +135,8 @@
         const modal = document.getElementById("modal");
 
         $(document).on("click", "#popUp", function () {
+            var providerName = $(this).data('id');
+             $('#del').attr('value', providerName);
             modal.style.display = "block";
             document.body.style.overflow = "hidden";
         });
