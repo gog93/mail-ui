@@ -30,18 +30,39 @@
     <section class="content">
         <div class="card card-solid">
             <div class="card-body pb-0">
-                <textarea id="edit-marker"></textarea>
-                <button class="btn" type="submit" id="edit-template">Edit</button>
+               <p class="templateContent"></p>
             </div>
         </div>
-
     </section>
     <div th:replace="layout/delete::delete"></div>
 </div>
-
 <th:block layout:fragment="script">
     <script th:src="@{/js/modal.delete.js}"></script>
 
+
+<script>
+
+        function loadMarkers() {
+            var template = document.getElementById("template").innerText;
+
+            $.ajax({
+                url: '/marker/view/template/'+template,
+                type: 'GET',
+                success: function(data) {
+                    $('.templateContent').html(data);
+
+                },
+                error: function() {
+                    // Handle the error appropriately
+                }
+            });
+    }
+
+    $(document).ready(function () {
+        loadMarkers();
+    });
+
+</script>
 </th:block>
 </body>
 </html>

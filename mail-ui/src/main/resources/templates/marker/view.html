@@ -47,12 +47,20 @@
                 </table>
             </div>
         </div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <button type="submit" id="del">Delete</button>
+                <span class="close">Cancel</span>
+
+
+            </div>
+        </div>
     </section>
     <div th:replace="layout/delete::delete"></div>
 </div>
+
 <th:block layout:fragment="script">
     <script th:src="@{/js/modal.delete.js}"></script>
-
 
 <script>
 
@@ -68,26 +76,30 @@
                     var parsedData = JSON.parse(data);
 
                     $.each(parsedData, function(index, template) {
+                        var punctuationRegex = /[.!?]/; // Regular expression to match period, exclamation mark, or question mark
+                        var sentences = template.templateContent.split(punctuationRegex);
+                        var firstSentence = sentences[0].trim()+ ". . ."; // Trim any leading or trailing whitespace
+                        var maxLength = 50;
+                        if (firstSentence.length > maxLength) {
+                            firstSentence = firstSentence.substring(0, maxLength) + "..."; // Truncate the sentence if it exceeds the maximum length
+                        }
+
                         var row = '<tr>' +
                             '<td>' + ++index + '</td>' +
                             '<td>' + template.tag + '</td>' +
-                            '<td>' + template.templateContent + '</td>' +
+                            '<td>' + firstSentence + '</td>' +
                             '<td>' + template.createdBy + '</td>' +
                             '<td>' + template.createdAt + '</td>' +
                             '<td>' +
-                            '<button type="button" id="edit" class="btn customer-btn" data-id="' + template.id + '">Edit</button>' +
-                            '<a  href="/api/v1/mail/view/' + encodeURIComponent(template.id) + '" class="btn btn-primary-view" data-id="' + template.id + '">View</a>' +
-                            '<button type="button" id="delete" class="btn delete-btn" data-id="' + template.id + '">Delete</button>' +
+                            '<a  href="/marker-page/template/edit?tag=' + encodeURIComponent(template.tag) + '" class="btn btn-primary-view" data-id="' + template.id + '">Edit</a>' +
+                            '<a  href="/marker-page/view-template?tag=' + encodeURIComponent(template.tag) + '" class="btn btn-primary-view" data-id="' + template.id + '">View</a>' +
+                            '<button type="button" id="popUp" class="btn delete-btn" data-id="' + template.tag + '">Delete</button>' +
                             '</td>' +
                             '</tr>';
                         $markerTable.append(row);
                     });
 
-                    // Unbind the click event before binding it again
-                    $('.customer-btn').off('click').on('click', function() {
-                        var customerId = $(this).data('id');
-                        addCustomer(customerId);
-                    });
+
                 },
                 error: function() {
                     // Handle the error appropriately
@@ -97,10 +109,45 @@
 
     }
 
+        function deleteTag(tag) {
+
+        }
+
     $(document).ready(function () {
         loadMarkers();
-    });
+        $(document).on("click", "#del", function () {
+            var tag = document.getElementById('edit').value;
 
+            $.ajax({
+                url:'/marker/view/delete-template/' + tag,
+                type: 'DELETE',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function () {
+
+                },
+                error: function () {
+                    closeButton()
+                    loadMarkers()
+                }
+            });
+        });
+        const modal = document.getElementById("modal");
+
+        $(document).on("click", "#popUp", function () {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        });
+        const closeBtn = document.getElementsByClassName("close")[0];
+        closeBtn.addEventListener("click", function() {
+            closeButton();
+        });
+
+ function closeButton(){
+     modal.style.display = "none";
+     document.body.style.overflow = "auto";
+        }
+    });
 </script>
 </th:block>
 </body>

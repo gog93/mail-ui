@@ -121,9 +121,9 @@ public class Demo {
         if (lastLine.startsWith("@Delete-")) {
             handleDeleteToken(fileName);
         }
-//        if (lastLine.startsWith("@Edit-")) {
-//            handleEditToken(fileName);
-//        }
+        if (lastLine.startsWith("@Edit-")) {
+            handleEditToken(fileName);
+        }
         if (!lines.isEmpty() && lines.get(0).startsWith("@Edit-") && lines.get(lines.size() - 1).startsWith("@End")) {
             saveEdit(fileName, editTag.toString());
             clearFile(fileName);
@@ -343,74 +343,74 @@ public class Demo {
     }
 
 
-//    public String handleEditToken(String fileName) {
-//        List<String> lines = linesToArrayList(fileName);
-//
-//        Pattern pattern = Pattern.compile("@(\\w+-)?(\\w+)\\.");
-//        StringBuilder tag = new StringBuilder();
-//        if (lines.get(lines.size() - 1).startsWith("@Edit")) {
-//            Matcher matcher = pattern.matcher(lines.get(lines.size() - 1));
-//
-//            if (matcher.matches()) {
-//                String token = matcher.group(2);
-//                tag.append(token);
-//            }
-//
-//            String template = getQueryApi(tag.toString());
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//
-//            Map<String, List<String>> json = null;
-//            try {
-////                json = mapper.read(template, Map.class);
-//            } catch (JsonProcessingException e) {
-//                log.info("Token not found");
-//            }
-//            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-//                // Extract the key and values from the JSON object
-//                Iterator<Map.Entry<String, List<String>>> iterator = json.entrySet().iterator();
-//                String key = null;
-//                List<String> value = new ArrayList<>();
-//                while (iterator.hasNext()) {
-//                    Map.Entry<String, List<String>> entry = iterator.next();
-//                    key = entry.getKey();
-//                    value.addAll(entry.getValue());
-//                }
-//                StringBuilder str = new StringBuilder();
-//                String[] words = key.split(" ");
-//                String lineSeparator = System.getProperty("line.separator");
-//
-//
-//                if (!json.isEmpty()) {
-//                    writer.append(lineSeparator);
-//                    writer.append("--Template");
-//                    writer.append(lineSeparator);
-//                    for (String word : words) {
-//                        if (str.length() + word.length() > 80) {
-//                            writer.append(str.toString().trim()).append(lineSeparator);
-//                            str = new StringBuilder();
-//                        }
-//                        str.append(word).append(" ");
-//                    }
-//                    if (str.length() > 0) {
-//                        writer.append(str.toString().trim()).append(lineSeparator);
-//                    }
-//                    writer.append("--wizard");
-//                    assert value != null;
-//                    List<String> questions = value;
-//                    for (String qtn : questions) {
-//                        writer.append(lineSeparator);
-//                        writer.append(qtn);
-//                    }
-//                }
-//
-//            } catch (Exception ex) {
-//                log.info("An error occurred while writing to file");
-//            }
-//
-//        }
-//        return tag.toString();
-//    }
+    public String handleEditToken(String fileName) {
+        List<String> lines = linesToArrayList(fileName);
+
+        Pattern pattern = Pattern.compile("@(\\w+-)?(\\w+)\\.");
+        StringBuilder tag = new StringBuilder();
+        if (lines.get(lines.size() - 1).startsWith("@Edit")) {
+            Matcher matcher = pattern.matcher(lines.get(lines.size() - 1));
+
+            if (matcher.matches()) {
+                String token = matcher.group(2);
+                tag.append(token);
+            }
+
+            String template = getQueryApi(tag.toString());
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            Map<String, List<String>> json = null;
+            try {
+                json = mapper.readValue(template, Map.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+                // Extract the key and values from the JSON object
+                Iterator<Map.Entry<String, List<String>>> iterator = json.entrySet().iterator();
+                String key = null;
+                List<String> value = new ArrayList<>();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, List<String>> entry = iterator.next();
+                    key = entry.getKey();
+                    value.addAll(entry.getValue());
+                }
+                StringBuilder str = new StringBuilder();
+                String[] words = key.split(" ");
+                String lineSeparator = System.getProperty("line.separator");
+
+
+                if (!json.isEmpty()) {
+                    writer.append(lineSeparator);
+                    writer.append("--Template");
+                    writer.append(lineSeparator);
+                    for (String word : words) {
+                        if (str.length() + word.length() > 80) {
+                            writer.append(str.toString().trim()).append(lineSeparator);
+                            str = new StringBuilder();
+                        }
+                        str.append(word).append(" ");
+                    }
+                    if (str.length() > 0) {
+                        writer.append(str.toString().trim()).append(lineSeparator);
+                    }
+                    writer.append("--wizard");
+                    assert value != null;
+                    List<String> questions = value;
+                    for (String qtn : questions) {
+                        writer.append(lineSeparator);
+                        writer.append(qtn);
+                    }
+                }
+
+            } catch (Exception ex) {
+                log.info("An error occurred while writing to file");
+            }
+
+        }
+        return tag.toString();
+    }
 
 
     public void saveEdit(String fileName, String tag) {

@@ -111,3 +111,27 @@ $(document).on("click", ".btn-delete", function () {
         });
 
 });
+const submitButton = document.querySelector('#edit-template');
+const messageInput = document.querySelector('#edit-marker');
+
+submitButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/marker/edit-template',
+        type: 'GET',
+        contentType: 'application/json',
+        data: {search: messageInput.value.trim()},
+
+        success: function (customer) {
+            $('#edit-marker').val(customer);
+
+        },
+        error: function () {
+            console.log('Error occurred while fetching chat data');
+        }
+    });
+    if (messageInput.value.trim() !== '') {
+        // addUserMessage(messageInput.value.trim());
+        messageInput.value = '';
+    }
+});
