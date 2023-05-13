@@ -6,6 +6,7 @@ import org.medical.hub.mail.service.NotificationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -19,5 +20,29 @@ public class NotificationServiceImpl implements NotificationService {
         List<Notification> notifications = notificationRepository.findByProviderName(name);
 
         return notifications;
+    }
+
+    @Override
+    public List<Notification> findAll() {
+        return notificationRepository.findAll();
+    }
+
+    @Override
+    public Notification changeStatus(Long id) {
+       Notification byId = notificationRepository.findById(id).get();
+       byId.setStatus("viewed");
+        return  notificationRepository.save(byId);
+
+    }
+
+    @Override
+    public List<Notification> findAllNewNotifications() {
+
+        return notificationRepository.findByStatus("unread");
+    }
+
+    @Override
+    public Optional<Notification> findById(Long id) {
+        return  notificationRepository.findById(id);
     }
 }

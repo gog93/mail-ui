@@ -17,5 +17,6 @@ public class Notification {
     private String providerName;
     private Date date;
     private Long emailId;
+    private String status;
 
 }

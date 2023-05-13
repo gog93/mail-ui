@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Workflow Details</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="display-5 fw-bold m-0">Provider profile name</h1>
+                    <h2 id="template" th:text="${notification.providerName}" th:value="${notification.providerName}"></h2>
+
+                </div>
+
+                <div class="col-6">
+
+                </div>
+                <div th:replace="layout/alert::alert" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="layout/delete::delete"></div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/modal.delete.js}"></script>
+
+
+</th:block>
+</body>
+</html>

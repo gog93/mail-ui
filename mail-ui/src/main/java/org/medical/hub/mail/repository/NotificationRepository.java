@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification,Long> {
   List<Notification> findByProviderName(String name);
+
+    List<Notification> findByStatus(String unread);
 }

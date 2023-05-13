@@ -19,12 +19,6 @@ public class MailController {
     private final MailService service;
 
 
-    @PostMapping("/send")
-    public String sendMail(Model model){
-        model.addAttribute("provider", new NewMailProfileDto());
-        return "create";
-    }
-
     @GetMapping("/profile/providers")
     public String provider(Model model) {
 

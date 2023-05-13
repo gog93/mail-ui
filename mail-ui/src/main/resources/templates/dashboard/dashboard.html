@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+<head>
+    <title>Workflow Details</title>
+    <style>
+        .modal-container {
+            margin-top: -85px;
+            position: relative;
+            z-index: 9999;
+            margin-left: 700px;
+        }
+        .view-button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .not {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 235px;
+            height:60px; /* Increased height to accommodate the content */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: flex; /* Added to enable flexbox layout */
+            justify-content: space-between; /* Added to distribute content evenly */
+            align-items: center;
+        }
+        .not p {
+            margin: 5px 0;
+            font-size: 12px; /* Adjust the font size as needed */
+        }
+        .close {
+            background-color: #ccc;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="display-5 fw-bold m-0">Provider</h1>
+                </div>
+
+                <div class="col-6">
+                </div>
+                <div th:replace="layout/alert::alert" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-container" class="modal-container"></div>
+
+    <div>
+        <!-- Additional content -->
+    </div>
+    <div th:replace="layout/delete::delete"></div>
+</div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/modal.delete.js}"></script>
+    <script>
+        function notification() {
+            setTimeout(function() {
+            $.ajax({
+                url: '/notifications',
+                type: 'get',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(notification) {
+                    for (var i = 0; i < notification.length; i++) {
+                        popUpShow(notification[i].date, notification[i].id, i);
+                    }
+                },
+                error: function() {
+                    notification();
+                }
+            });
+            }, 1000);
+        }
+
+        function popUpShow(date, id, index) {
+            var modalContainer = document.getElementById("modal-container");
+            var modal = document.createElement("div");
+            modal.className = "not";
+            modal.style.top = (index * 65) + "px"; // Adjust the spacing between popups
+
+            var content = "<div style='display: flex; align-items: center;'>";
+            content += "<p style='margin-right: 10px;'>You receive new email: " + date + "</p>";
+            content += "<button class='btn view-button' onclick='viewNot(" + id + ")' id=id>View</button>";
+            content += "</div>";
+
+            modal.innerHTML = content; // Display the date and "View" button side by side
+
+            modalContainer.appendChild(modal);
+        }
+
+        $(document).ready(function() {
+
+                notification();
+            setInterval(notification, 1000);
+            });
+
+        function viewNot(id) {
+            $.ajax({
+                url:'/notifications/view/' + id,
+                type: 'post',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (customer) {
+                    window.location.href = "/dashboard/notification/"+id+"/view";
+                },
+                error: function () {
+                    notification();
+                }
+            });
+        }
+    </script>
+</th:block>
+</body>
+</html>
