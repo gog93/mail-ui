@@ -22,14 +22,18 @@ $(document).ready(function () {
                         '<td>' + ++i + '</td>' +
                         '<td>' + note.profileName + '</td>' +
                         '<td style="padding-left:650px">' +
-                        '<button type="button" id="edit" class="btn customer-btn" data-id="' + note.profileName + '">Edit</button>' +
+                        '<button type="button" id="edit" class="btn customer-btn" data-id="' + note.id + '">Edit</button>' +
                         '<a href="/api/v1/mail/view/' + encodeURIComponent(note.profileName) + '" class="btn btn-primary-view" data-id="' + note.profileName + '">View</a>' +
                         '<button type="button" id="delete" class="btn add-customers-btn" data-id="' + note.profileName + '">Delete</button>' +
                         '</td>' +
                         '</tr>';
                     $('#provider tbody').append(noteRow);
                 });
+                $('#edit').off('click').on('click', function() {
+                    var id = $(this).data('id');
+                    window.location.href = '/api/v1/mail/profile/edit/' + id;
 
+                });
 
 
                 if ($('ul.pagination li').length - 2 != response.totalPages) {

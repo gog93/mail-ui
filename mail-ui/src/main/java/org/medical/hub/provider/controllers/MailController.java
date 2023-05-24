@@ -22,7 +22,7 @@ public class MailController {
     @GetMapping("/profile/providers")
     public String provider(Model model) {
 
-        model.addAttribute("providers", service.findAll());
+        model.addAttribute("providers", service.findByIsDeleted());
         model.addAttribute("provider", new NewMailProfileDto());
         return "provider/index";
     }
@@ -33,7 +33,7 @@ public class MailController {
     }
     @GetMapping("/view/{profileName}")
     public String view(Model model,@PathVariable("profileName") String profileName) {
-       MailProfile mailProfile= service.findByProfileName(profileName).get();
+       NewMailProfileDto mailProfile= service.findByProfileName(profileName);
         model.addAttribute("provider",mailProfile)  ;
 
         return "provider/view";
@@ -45,6 +45,17 @@ public class MailController {
         service.newProfile(newMailProfileDto);
         model.addAttribute("provider", new NewMailProfileDto());
         return "redirect:/api/v1/mail/profile/providers";    }
+
+    @PostMapping("/profile/edit/{id}")
+    public String newMailProfileEdit(@PathVariable("id")Long id, Model model, MailProfile newMailProfileDto) throws Exception {
+        service.editProfile(id,newMailProfileDto);
+        model.addAttribute("provider", new NewMailProfileDto());
+        return "redirect:/api/v1/mail/profile/providers";    }
+
+    @GetMapping("/profile/edit/{id}")
+    public String editMailProfile(@PathVariable("id")Long id, Model model) throws Exception {
+        model.addAttribute("provider", service.findById(id).get());
+        return "provider/edit";    }
 
 
     @PatchMapping("/profile")

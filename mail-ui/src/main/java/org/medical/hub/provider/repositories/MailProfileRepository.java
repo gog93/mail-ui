@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,7 +20,8 @@ public interface MailProfileRepository extends JpaRepository<MailProfile, Long> 
 
 
    Optional< MailProfile> findByProfileName(String profileName);
-    @Query("SELECT e FROM MailProfile e WHERE e.profileName LIKE %:search%")
-    Page<MailProfile> findAll(@Param("search") String search, Pageable pageable);
+    @Query("SELECT e FROM MailProfile e WHERE e.profileName LIKE %:search% AND e.isDeleted = false")
+    Page<MailProfile> findByIsDeleted(@Param("search") String search, Pageable pageable);
 
+    List<MailProfile> findByIsDeleted(boolean b);
 }

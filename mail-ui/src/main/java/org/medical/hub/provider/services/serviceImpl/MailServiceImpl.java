@@ -16,6 +16,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,14 +24,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.medical.hub.provider.utils.SendMailUtils.isEmailDomainValid;
-import static org.medical.hub.provider.utils.SendMailUtils.replacePlaceholders;
-import static org.medical.hub.provider.utils.SendMailUtils.isValidEmail;
+import static org.medical.hub.provider.utils.SendMailUtils.*;
 
 
 @Service
@@ -81,7 +79,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public String newProfile(NewMailProfileDto request) throws Exception {
 
-         MailProfile mailProfile = dtoToEntity(request);
+        MailProfile mailProfile = dtoToEntity(request);
         mailProfileRepository.save(mailProfile);
 
         return "Profile saved";
@@ -122,6 +120,7 @@ public class MailServiceImpl implements MailService {
         if (mailProfile != null) {
             try {
                 mailProfile.setIsDeleted(true);
+                mailProfileRepository.save(mailProfile);
             } catch (Exception ex) {
                 log.info(ex.getMessage());
             }
@@ -135,26 +134,52 @@ public class MailServiceImpl implements MailService {
     @Override
     public List<NewMailProfileDto> findAll() {
         List<MailProfile> all = mailProfileRepository.findAll();
-        return    entityToDto(all);
+        return entityToDto(all);
 
     }
+
     public List<MailProfile> findAllMails() {
-        return    mailProfileRepository.findAll();
+        return mailProfileRepository.findAll();
 
     }
+
     public Optional<MailProfile> findById(Long id) {
-        return    mailProfileRepository.findById( id);
+        return mailProfileRepository.findById(id);
 
     }
 
     @Override
-    public Page<MailProfile> findAll(String search, Pageable pageable) {
-        return mailProfileRepository.findAll(search,pageable);
+    public Page<MailProfile> findByIsDeleted(String search, Pageable pageable) {
+        return mailProfileRepository.findByIsDeleted(search, pageable);
     }
 
     @Override
-    public Optional<MailProfile> findByProfileName(String profileName) {
-        return   mailProfileRepository.findByProfileName( profileName);
+    public NewMailProfileDto findByProfileName(String profileName) {
+        MailProfile byProfileName = mailProfileRepository.findByProfileName(profileName).get();
+        return entityToDto(byProfileName);
+    }
+
+    @Override
+    public List<MailProfile> findByIsDeleted() {
+        return mailProfileRepository.findByIsDeleted(true);
+    }
+
+    @Override
+    public void editProfile(Long id,MailProfile profileName) throws Exception {
+        MailProfile byProfileName = findById(id).get();
+        byProfileName.setProfileName(profileName.getProfileName());
+  byProfileName.setHost(profileName.getHost());
+  byProfileName.setPort(profileName.getPort());
+  byProfileName.setUsername(profileName.getUsername());
+  byProfileName.setPassword(profileName.getPassword());
+  byProfileName.setTransportProtocol(profileName.getTransportProtocol());
+  byProfileName.setIsSmtpAuth(profileName.getIsSmtpAuth());
+  byProfileName.setIsStarttlsEnable(profileName.getIsStarttlsEnable());
+  byProfileName.setIsMailDebug(profileName.getIsMailDebug());
+  byProfileName.setSslTrust(profileName.getSslTrust());
+  byProfileName.setSslProtocols(profileName.getSslProtocols());
+  byProfileName.setIsSslTrust(profileName.getIsSslTrust());
+  mailProfileRepository.save(byProfileName);
     }
 
 
@@ -177,7 +202,7 @@ public class MailServiceImpl implements MailService {
                 .build();
     }
 
-    protected static NewMailProfileDto entityToDto(MailProfile request) {
+    protected  NewMailProfileDto entityToDto(MailProfile request) {
         return NewMailProfileDto.builder()
                 .profileName(request.getProfileName().trim().replaceAll(" ", "_"))
                 .host(request.getHost())
@@ -197,7 +222,7 @@ public class MailServiceImpl implements MailService {
     private List<NewMailProfileDto> entityToDto(List<MailProfile> mails) {
         List<NewMailProfileDto> newMailProfileDtos = mails.stream()
                 .map(request -> {
-                    return  NewMailProfileDto.builder()
+                    return NewMailProfileDto.builder()
                             .profileName(request.getProfileName().trim().replaceAll(" ", "_"))
                             .host(request.getHost())
                             .port(request.getPort())

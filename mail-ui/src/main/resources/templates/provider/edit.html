@@ -13,7 +13,9 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="m-0">Workflow</h1>
+                    <h1 class="m-0">Edit Privider</h1>
+                    <h2 id="provider" th:text="${provider.profileName}" th:value="${provider.profileName}"></h2>
+
                 </div>
             </div>
         </div>
@@ -24,11 +26,12 @@
             <div class="row">
                 <div class="col-12 card">
                     <div class="card-body">
+
                         <form
                                 th:object="${provider}"
                                 id="create-workflow"
                                 method="POST"
-                                th:action="@{/api/v1/mail/profile}">
+                                th:action="@{'/api/v1/mail/profile/edit/'+${provider.id}}">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -82,7 +85,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="description">Password</label>
-                                        <input id="password"  th:field="*{password}"  type="text" class="form-control form-control-sm" placeholder="Password">
+                                        <input id="password"  th:field="*{password}"  type="password" class="form-control form-control-sm" placeholder="Password">
                                         <!--                                            <p class="text text-danger"-->
                                         <!--                                               th:if="${#fields.hasErrors('description')}"-->
                                         <!--                                               th:errors="*{description}"></p>-->

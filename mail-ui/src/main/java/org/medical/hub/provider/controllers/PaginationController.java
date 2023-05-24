@@ -21,7 +21,7 @@ public class PaginationController {
     @GetMapping("/page")
     public Page<MailProfile> allDraft(@RequestParam(name = "search", required = false) String search,
                                       Pageable pageable) {
-        Page<MailProfile> byStatus = service.findAll(search, pageable);
+        Page<MailProfile> byStatus = service.findByIsDeleted(search, pageable);
 
         return byStatus;
     }

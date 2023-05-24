@@ -58,7 +58,7 @@ function loadCustomers() {
                     '<td>' + customer.name + '</td>' +
                     '<td>' + customer.email + '</td>' +
                     '<td>' +
-                    '<button type="button"  class="btn btn-primary customer-btn" data-id="' + customer.id + '">Add Customer</button>' +
+                    '<button type="button"  class="btn btn-primary customer-btn" data-id="' + customer.id + '">Add Collaborator</button>' +
                     '</td>' +
                     '</tr>';
                 $customerTable.append(row);

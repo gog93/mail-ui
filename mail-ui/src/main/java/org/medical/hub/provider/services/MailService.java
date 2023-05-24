@@ -22,7 +22,11 @@ public interface MailService {
     List<MailProfile> findAllMails();
     Optional<MailProfile> findById(Long id);
 
-    Page<MailProfile> findAll(String search, Pageable pageable);
+    Page<MailProfile> findByIsDeleted(String search, Pageable pageable);
 
-    Optional<MailProfile> findByProfileName(String profileName);
+    NewMailProfileDto findByProfileName(String profileName);
+
+    List<MailProfile> findByIsDeleted();
+
+    void editProfile(Long id,MailProfile profileName) throws Exception;
 }
