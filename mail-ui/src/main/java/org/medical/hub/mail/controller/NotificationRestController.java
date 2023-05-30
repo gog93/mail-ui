@@ -12,6 +12,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/notifications")
+@CrossOrigin(origins = "http://localhost")
+
 public class NotificationRestController {
     @Autowired
     private  NotificationService service ;

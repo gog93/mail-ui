@@ -15,7 +15,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping()
-    public String dashboard(Model model) {
+    public String dashboard() {
         return "dashboard/dashboard";
     }
 
