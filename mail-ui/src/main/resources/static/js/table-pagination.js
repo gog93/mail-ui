@@ -8,7 +8,7 @@ $(document).ready(function () {
          */
         $.ajax({
             type: "GET",
-            url: "http://localhost:8084/page",
+            url: "/page",
             data: {
                 page: startPage,
                 size: 10,
@@ -153,7 +153,7 @@ $(document).ready(function () {
         var providerName = $(this).data('id');
 
         $.ajax({
-            url: 'http://localhost:8084/profile/delete?profileName=' + providerName,
+            url: '/profile/delete?profileName=' + providerName,
             type: 'DELETE',
             contentType: 'application/json',
             dataType: 'json',
