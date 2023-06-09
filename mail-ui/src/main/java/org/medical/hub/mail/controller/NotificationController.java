@@ -17,14 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class NotificationController {
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
-    @GetMapping("/note")
-    public String not(Notification notification, Model model) {
-        return "dashboard/note";
-    } @PostMapping("/note")
-    public String notPost(Notification notification, Model model) {
-        notificationRepository.save(notification);
-        return "redirect:/dashboard/note";
-    }
+
     @GetMapping()
     public String dashboard() {
         return "dashboard/dashboard";
