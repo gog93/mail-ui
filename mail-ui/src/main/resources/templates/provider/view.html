@@ -16,11 +16,6 @@
                     <h1 class="display-5 fw-bold m-0">Provider</h1>
                 </div>
 
-                <div class="col-6">
-                    <a th:href="@{/workflow/{workflowId}/create-email(workflowId=${workflowId})}"
-                       class="btn btn-outline-primary btn-sm float-right"
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Add Email</a>
-                </div>
                 <div th:replace="layout/alert::alert" th:remove="tag"></div>
             </div>
         </div>
