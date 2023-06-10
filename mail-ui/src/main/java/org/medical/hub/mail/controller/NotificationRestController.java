@@ -18,21 +18,23 @@ import java.util.Map;
 
 public class NotificationRestController {
     @Autowired
-    private  NotificationService service ;
+    private NotificationService service;
 
 
     @GetMapping()
-    public  List<Notification> allNotifications() {
+    public List<Notification> allNotifications() {
 
         return service.findAllNewNotifications();
     }
+
     @PostMapping("/view/{id}")
     public Notification viewNot(@PathVariable("id") Long id) {
 
         return service.changeStatus(id);
     }
+
     @GetMapping("/{name}")
-   @ResponseBody
+    @ResponseBody
     public Map<Date, Integer> getNotifications(@PathVariable("name") String name) {
         Map<Date, Integer> dateMap = new HashMap<>();
         int i = 1;
