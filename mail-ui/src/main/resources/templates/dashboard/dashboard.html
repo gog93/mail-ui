@@ -89,7 +89,8 @@
             }, 1000);
         }
 
-        function popUpShow(date, id, index) {
+        function popUpShow(day, id, index) {
+           var date= day.substring(0, 10);
             var modalContainer = document.getElementById("modal-container");
             var modal = document.createElement("div");
             modal.className = "not";
